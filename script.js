@@ -2,7 +2,8 @@ const menuButton = document.getElementById("menuButton");
 const navigation = document.getElementById("navigation");
 const navLinks = document.querySelectorAll(".nav-link");
 
-menuButton.addEventListener("click", () => {
+if (menuButton && navigation) {
+  menuButton.addEventListener("click", () => {
     navigation.classList.toggle("show");
 
     if (navigation.classList.contains("show")) {
@@ -10,13 +11,16 @@ menuButton.addEventListener("click", () => {
     } else {
         menuButton.textContent = "☰";
     }
-});
+  });
+}
 
 
 navLinks.forEach((link) => {
     link.addEventListener("click", () => {
-        navigation.classList.remove("show");
-        menuButton.textContent = "☰";
+        if (navigation && menuButton) {
+            navigation.classList.remove("show");
+            menuButton.textContent = "☰";
+        }
 
         navLinks.forEach((item) => {
             item.classList.remove("active");
@@ -68,16 +72,19 @@ const counterObserver = new IntersectionObserver(
 );
 
 
-counters.forEach((counter) => {
-    counterObserver.observe(counter);
-});
+if ("IntersectionObserver" in window) {
+    counters.forEach((counter) => {
+        counterObserver.observe(counter);
+    });
+}
 
 
 const resultForm = document.getElementById("resultForm");
 const applicationId = document.getElementById("applicationId");
 const formMessage = document.getElementById("formMessage");
 
-resultForm.addEventListener("submit", (event) => {
+if (resultForm && applicationId && formMessage) {
+  resultForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const value = applicationId.value.trim();
@@ -91,4 +98,5 @@ resultForm.addEventListener("submit", (event) => {
 
     formMessage.textContent =
         `"${value}" raqamli natija backend ulangandan keyin ko‘rsatiladi.`;
-});
+  });
+}

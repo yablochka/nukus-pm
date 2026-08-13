@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Nukus Prezident maktabi yangiliklari uchun boshqaruv paneli"
+    />
+    <title>Yangiliklar dashboardi | Nukus Prezident maktabi</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+
+  <body class="dashboard-body">
+    <aside class="dashboard-sidebar" id="dashboardSidebar">
+      <a href="index.html" class="logo dashboard-logo">
+        <div class="logo-icon">PS</div>
+        <div class="logo-text">
+          <strong>Nukus Prezident maktabi</strong>
+          <span>News dashboard</span>
+        </div>
+      </a>
+
+      <nav class="dashboard-menu" aria-label="Dashboard bo‘limlari">
+        <a href="#overview" class="dashboard-menu-link active">
+          <i class="fa-solid fa-chart-pie"></i>
+          Umumiy ko‘rsatkichlar
+        </a>
+        <a href="#create-news" class="dashboard-menu-link">
+          <i class="fa-solid fa-pen-to-square"></i>
+          Yangilik qo‘shish
+        </a>
+        <a href="#news-list" class="dashboard-menu-link">
+          <i class="fa-solid fa-newspaper"></i>
+          Yangiliklar ro‘yxati
+        </a>
+        <a href="#analytics" class="dashboard-menu-link">
+          <i class="fa-solid fa-chart-line"></i>
+          Analitika
+        </a>
+      </nav>
+
+      <a href="news.html" class="dashboard-back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        Saytga qaytish
+      </a>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <div>
+          <span class="section-label">Matbuot markazi</span>
+          <h1>Yangiliklar dashboardi</h1>
+          <p>
+            Maktab yangiliklarini yaratish, tahrirlash va kuzatish uchun yagona
+            boshqaruv oynasi.
+          </p>
+        </div>
+
+        <div class="dashboard-header-actions">
+          <button class="dashboard-icon-button" aria-label="Bildirishnomalar">
+            <i class="fa-regular fa-bell"></i>
+          </button>
+          <div class="dashboard-user">
+            <span>AM</span>
+            <div>
+              <strong>Admin</strong>
+              <small>Matbuot kotibi</small>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="dashboard-stats" id="overview" aria-label="Yangiliklar statistikasi">
+        <article class="dashboard-stat-card">
+          <span class="dashboard-stat-icon"><i class="fa-solid fa-newspaper"></i></span>
+          <div>
+            <strong>128</strong>
+            <p>Jami yangiliklar</p>
+          </div>
+        </article>
+        <article class="dashboard-stat-card">
+          <span class="dashboard-stat-icon"><i class="fa-solid fa-eye"></i></span>
+          <div>
+            <strong>24.6k</strong>
+            <p>Oylik ko‘rishlar</p>
+          </div>
+        </article>
+        <article class="dashboard-stat-card">
+          <span class="dashboard-stat-icon"><i class="fa-solid fa-clock"></i></span>
+          <div>
+            <strong>7</strong>
+            <p>Rejalashtirilgan</p>
+          </div>
+        </article>
+        <article class="dashboard-stat-card">
+          <span class="dashboard-stat-icon"><i class="fa-solid fa-star"></i></span>
+          <div>
+            <strong>18</strong>
+            <p>Asosiy sahifada</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="dashboard-panel create-news-panel" id="create-news">
+          <div class="dashboard-panel-heading">
+            <div>
+              <span class="section-label">Yangi maqola</span>
+              <h2>Yangilik qo‘shish</h2>
+            </div>
+            <span class="panel-badge">Qoralama</span>
+          </div>
+
+          <form class="news-dashboard-form">
+            <label>
+              Sarlavha
+              <input type="text" placeholder="Yangilik sarlavhasini kiriting" />
+            </label>
+            <div class="form-row">
+              <label>
+                Kategoriya
+                <select>
+                  <option>Maktab hayoti</option>
+                  <option>Yutuqlar</option>
+                  <option>Tadbirlar</option>
+                  <option>Qabul</option>
+                </select>
+              </label>
+              <label>
+                Sana
+                <input type="date" value="2026-08-12" />
+              </label>
+            </div>
+            <label>
+              Qisqa tavsif
+              <textarea placeholder="Yangilik uchun qisqa annotatsiya"></textarea>
+            </label>
+            <div class="form-actions">
+              <button type="button" class="button button-primary">Chop etish</button>
+              <button type="button" class="button dashboard-secondary-button">Saqlash</button>
+            </div>
+          </form>
+        </article>
+
+        <article class="dashboard-panel featured-news-panel">
+          <div class="dashboard-panel-heading">
+            <div>
+              <span class="section-label">Asosiy yangilik</span>
+              <h2>Hafta diqqat markazida</h2>
+            </div>
+          </div>
+
+          <div class="featured-news-card">
+            <div class="featured-news-image">
+              <span class="news-category">Yutuqlar</span>
+            </div>
+            <div class="featured-news-content">
+              <div class="news-date">10-avgust, 2026</div>
+              <h3>O‘quvchilarimiz STEM haftaligida innovatsion loyihalarini namoyish etdi</h3>
+              <p>
+                Dashboard orqali ushbu yangilikni bosh sahifaga chiqarish,
+                tahrirlash yoki chop etish vaqtini rejalashtirish mumkin.
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-panel news-list-panel" id="news-list">
+        <div class="dashboard-panel-heading">
+          <div>
+            <span class="section-label">Kontent nazorati</span>
+            <h2>So‘nggi yangiliklar ro‘yxati</h2>
+          </div>
+          <div class="dashboard-filter-group" aria-label="Yangilik filtrlari">
+            <button class="filter-button active">Barchasi</button>
+            <button class="filter-button">Chop etilgan</button>
+            <button class="filter-button">Qoralama</button>
+          </div>
+        </div>
+
+        <div class="dashboard-table-wrap">
+          <table class="dashboard-table">
+            <thead>
+              <tr>
+                <th>Sarlavha</th>
+                <th>Kategoriya</th>
+                <th>Sana</th>
+                <th>Holat</th>
+                <th>Ko‘rishlar</th>
+                <th>Amal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Yangi o‘quv yiliga tayyorgarlik ishlari boshlandi</td>
+                <td>Maktab hayoti</td>
+                <td>28-iyul, 2026</td>
+                <td><span class="status-pill published">Chop etilgan</span></td>
+                <td>3 420</td>
+                <td><button class="table-action">Tahrirlash</button></td>
+              </tr>
+              <tr>
+                <td>Xalqaro olimpiadada yuqori natija</td>
+                <td>Yutuqlar</td>
+                <td>22-iyul, 2026</td>
+                <td><span class="status-pill published">Chop etilgan</span></td>
+                <td>5 180</td>
+                <td><button class="table-action">Tahrirlash</button></td>
+              </tr>
+              <tr>
+                <td>Robototexnika laboratoriyasida ochiq dars</td>
+                <td>Tadbirlar</td>
+                <td>18-avgust, 2026</td>
+                <td><span class="status-pill draft">Qoralama</span></td>
+                <td>—</td>
+                <td><button class="table-action">Tahrirlash</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
