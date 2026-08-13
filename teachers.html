@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Nukus Prezident maktabi portali" />
-    <title>Natijalar | Nukus Prezident maktabi</title>
+    <title>O‘qituvchilar | Nukus Prezident maktabi</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
   </head>
@@ -33,73 +33,23 @@
         <nav class="navigation" id="navigation">
           <a href="index.html" class="nav-link">Bosh sahifa</a>
           <a href="admission.html" class="nav-link ">Qabul</a>
-          <a href="results.html" class="nav-link active">Natijalar</a>
+          <a href="results.html" class="nav-link ">Natijalar</a>
           <a href="news.html" class="nav-link ">Yangiliklar</a>
-          <a href="teachers.html" class="nav-link ">O‘qituvchilar</a>
+          <a href="teachers.html" class="nav-link active">O‘qituvchilar</a>
           <a href="statistics.html" class="nav-link ">Statistika</a>
         </nav>
         <button class="menu-button" id="menuButton" aria-label="Menyuni ochish">☰</button>
       </div>
     </header>
     <main>
-      <section class="page-hero results-page-hero">
+      <section class="page-hero teachers-page-hero">
         <div class="container page-hero-content">
-          <span class="section-label gold-label">Imtihon natijalari</span>
-          <h1>Natijalar</h1>
-          <p>Ariza yoki ruxsatnoma raqami orqali imtihon natijalarini tekshirish sahifasi.</p>
+          <span class="section-label gold-label">Ustozlar jamoasi</span>
+          <h1>O‘qituvchilar</h1>
+          <p>O‘qituvchilarimizning tajribasi, ilmiy faoliyati va ta’limdagi yutuqlari.</p>
         </div>
       </section>
-      <section class="section results-section">
-        <div class="container results-grid">
-          <div class="results-content"><span class="section-label">Tekshiruv</span><h2>Natijangizni tekshiring</h2><p>Raqamingizni kiriting va backend ulangandan so‘ng natija shu yerda ko‘rsatiladi.</p></div>
-          <form class="result-form" id="resultForm"><label for="applicationId">Ariza yoki ruxsatnoma raqami</label><div class="result-input-group"><input type="text" id="applicationId" placeholder="Masalan: NPS-2026-001" required /><button type="submit">Tekshirish</button></div><p class="form-message" id="formMessage"></p></form>
-        </div>
-      </section>
-
-      <section class="section sheet-results-section">
-        <div class="container">
-          <div class="section-heading">
-            <div>
-              <span class="section-label">Google Sheets</span>
-              <h2>IELTS/SAT natijalari</h2>
-              <p class="sheet-results-description">
-                Ma’lumotlar Google Sheet jadvalidan avtomatik yuklanadi.
-              </p>
-            </div>
-            <a
-              href="https://docs.google.com/spreadsheets/d/1H61o__fVhkTjwFBAh7cf3AMC9AFo5JEN1y_agPzveoI/edit?gid=540117896#gid=540117896"
-              class="view-all"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Jadvalni ochish
-              <span>→</span>
-            </a>
-          </div>
-
-          <p class="sheet-status" id="sheetStatus">Google Sheet yuklanmoqda...</p>
-
-          <div class="sheet-stats-grid" id="sheetStatsGrid" aria-label="Google Sheet statistikasi"></div>
-
-          <div class="dashboard-table-wrap sheet-results-table-wrap">
-            <table class="dashboard-table sheet-results-table">
-              <thead>
-                <tr>
-                  <th>Yil</th>
-                  <th>F.I.Sh</th>
-                  <th>IELTS</th>
-                  <th>SAT</th>
-                </tr>
-              </thead>
-              <tbody id="sheetResultsBody">
-                <tr>
-                  <td colspan="4">Ma’lumotlar yuklanmoqda...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+      <section class="section teachers-section"><div class="container"><div class="section-heading light-heading"><div><span class="section-label gold-label">Yutuqlar</span><h2>O‘qituvchilarimiz</h2></div></div><div class="teachers-grid"><article class="teacher-card"><div class="teacher-avatar">AM</div><div class="teacher-info"><span class="achievement-tag">Xalqaro olimpiada</span><h3>Dilshod Karimov</h3><p>Matematika o‘qituvchisi</p><strong>Xalqaro olimpiadaga tayyorlov bo‘yicha mentor</strong></div></article><article class="teacher-card"><div class="teacher-avatar">SD</div><div class="teacher-info"><span class="achievement-tag">IELTS</span><h3>Gulbahor Dauletova</h3><p>Ingliz tili o‘qituvchisi</p><strong>IELTS va akademik ingliz tili bo‘yicha trener</strong></div></article><article class="teacher-card"><div class="teacher-avatar">JR</div><div class="teacher-info"><span class="achievement-tag">Dasturlash</span><h3>Rustam Raximov</h3><p>Informatika o‘qituvchisi</p><strong>Robototexnika va dasturlash loyihalari rahbari</strong></div></article></div></div></section>
 
     </main>
     <footer class="footer">
