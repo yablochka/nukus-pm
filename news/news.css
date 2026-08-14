@@ -1,0 +1,84 @@
+.news-hero {
+    position: relative;
+    height: 340px;
+
+    display: flex;
+    align-items: center;
+
+    background:
+        linear-gradient(rgba(8,29,53,.75), rgba(8,29,53,.75)),
+        url("../images/school.jpg") center/cover;
+
+    color: white;
+}
+
+.news-hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.news-hero h1{
+    font-family:"Playfair Display",serif;
+    font-size:56px;
+    margin:15px 0;
+}
+
+.news-hero p{
+    max-width:650px;
+    color:rgba(255,255,255,.8);
+}
+
+.breadcrumb{
+    margin-top:25px;
+    display:flex;
+    gap:10px;
+    font-size:14px;
+}
+
+.breadcrumb a{
+    color:var(--gold-light);
+}
+
+.news-page{
+    background:var(--background);
+}
+
+.pagination{
+    margin-top:60px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+}
+
+.page-btn,
+.page-number{
+
+    height:45px;
+    min-width:45px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0 18px;
+
+    border:1px solid var(--border);
+
+    background:white;
+
+    transition:.3s;
+}
+
+.page-number.active{
+    background:var(--primary);
+    color:white;
+}
+
+.page-btn:hover,
+.page-number:hover{
+
+    background:var(--primary);
+    color:white;
+}

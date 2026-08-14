@@ -1,0 +1,119 @@
+.detail-hero{
+
+    position:relative;
+
+    min-height:450px;
+
+    display:flex;
+    align-items:flex-end;
+
+    padding-bottom:70px;
+
+    background:
+    linear-gradient(rgba(8,29,53,.7),rgba(8,29,53,.7)),
+    url("../images/school.jpg") center/cover;
+
+    color:white;
+
+}
+
+.detail-meta{
+
+    margin-top:25px;
+
+    display:flex;
+    gap:25px;
+
+    color:rgba(255,255,255,.8);
+
+}
+
+.article-container{
+
+    max-width:900px;
+
+}
+
+.article-cover{
+
+    width:100%;
+
+    margin-bottom:45px;
+
+}
+
+.article-content{
+
+    font-size:18px;
+
+    line-height:1.9;
+
+}
+
+.lead{
+
+    font-size:23px;
+
+    color:var(--primary);
+
+    font-weight:600;
+
+}
+
+.article-content p{
+
+    margin-bottom:24px;
+
+}
+
+.article-content h2{
+
+    margin:50px 0 20px;
+
+}
+
+.article-content blockquote{
+
+    margin:40px 0;
+
+    padding:30px;
+
+    border-left:5px solid var(--gold);
+
+    background:var(--background);
+
+    font-size:22px;
+
+    font-style:italic;
+
+}
+
+.article-navigation{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:30px;
+
+}
+
+.article-nav{
+
+    flex:1;
+
+    padding:30px;
+
+    border:1px solid var(--border);
+
+    transition:.3s;
+
+}
+
+.article-nav:hover{
+
+    border-color:var(--primary);
+
+    transform:translateY(-5px);
+
+}
