@@ -44,7 +44,7 @@
         </a>
       </nav>
 
-      <a href="news.html" class="dashboard-back-link">
+      <a href="news/index.html" class="dashboard-back-link">
         <i class="fa-solid fa-arrow-left"></i>
         Saytga qaytish
       </a>
@@ -116,35 +116,59 @@
             <span class="panel-badge">Qoralama</span>
           </div>
 
-          <form class="news-dashboard-form">
-            <label>
-              Sarlavha
-              <input type="text" placeholder="Yangilik sarlavhasini kiriting" />
-            </label>
-            <div class="form-row">
-              <label>
-                Kategoriya
-                <select>
-                  <option>Maktab hayoti</option>
-                  <option>Yutuqlar</option>
-                  <option>Tadbirlar</option>
-                  <option>Qabul</option>
-                </select>
-              </label>
-              <label>
-                Sana
-                <input type="date" value="2026-08-12" />
-              </label>
-            </div>
-            <label>
-              Qisqa tavsif
-              <textarea placeholder="Yangilik uchun qisqa annotatsiya"></textarea>
-            </label>
-            <div class="form-actions">
-              <button type="button" class="button button-primary">Chop etish</button>
-              <button type="button" class="button dashboard-secondary-button">Saqlash</button>
-            </div>
-          </form>
+          <form class="news-dashboard-form" id="newsForm">
+  <label>
+    Sarlavha
+    <input type="text" placeholder="Yangilik sarlavhasini kiriting" />
+  </label>
+
+  <div class="form-row">
+    
+    <label>
+      Sana
+      <input type="date" value="2026-08-12" />
+    </label>
+  </div>
+
+  <label>
+    Qisqa tavsif
+    <textarea placeholder="Yangilik uchun qisqa annotatsiya"></textarea>
+  </label>
+
+  <div class="news-media-field">
+    <div class="news-media-heading">
+      <div>
+        <span class="news-media-title">Yangilik rasmlari</span>
+        <small>Bir nechta rasm yuklang va bittasini asosiy rasm sifatida belgilang.</small>
+      </div>
+      <span class="news-media-count" id="imageCount">0 ta rasm</span>
+    </div>
+
+    <div class="image-dropzone" id="imageDropzone">
+      <input type="file" id="newsImages" accept="image/*" multiple hidden />
+      <div class="dropzone-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+      <strong>Rasmlarni shu yerga sudrab tashlang</strong>
+      <span>yoki</span>
+      <button type="button" class="dropzone-button" id="chooseImages">
+        <i class="fa-regular fa-images"></i>
+        Rasm tanlash
+      </button>
+      <small>PNG, JPG, WEBP · Bir nechta rasm tanlash mumkin</small>
+    </div>
+
+    <div class="news-images-grid" id="newsImagesGrid"></div>
+
+    <p class="media-help">
+      Birinchi yuklangan rasm avtomatik ravishda asosiy rasm bo‘ladi.
+      Istalgan rasmni <strong>Asosiy qilish</strong> tugmasi orqali almashtirishingiz mumkin.
+    </p>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="button button-primary">Chop etish</button>
+    <button type="button" class="button dashboard-secondary-button">Saqlash</button>
+  </div>
+</form>
         </article>
 
         <article class="dashboard-panel featured-news-panel">
@@ -226,5 +250,104 @@
         </div>
       </section>
     </main>
-  </body>
+  
+<script>
+(() => {
+  const input = document.getElementById("newsImages");
+  const dropzone = document.getElementById("imageDropzone");
+  const choose = document.getElementById("chooseImages");
+  const grid = document.getElementById("newsImagesGrid");
+  const count = document.getElementById("imageCount");
+  if (!input || !dropzone || !choose || !grid) return;
+
+  let images = [];
+  let mainId = null;
+  let nextId = 0;
+
+  choose.addEventListener("click", () => input.click());
+  input.addEventListener("change", e => { addFiles(e.target.files); input.value = ""; });
+
+  ["dragenter", "dragover"].forEach(name => dropzone.addEventListener(name, e => {
+    e.preventDefault(); dropzone.classList.add("is-dragging");
+  }));
+  ["dragleave", "drop"].forEach(name => dropzone.addEventListener(name, e => {
+    e.preventDefault();
+    if (name === "drop" || !dropzone.contains(e.relatedTarget)) dropzone.classList.remove("is-dragging");
+  }));
+  dropzone.addEventListener("drop", e => addFiles(e.dataTransfer.files));
+
+  function addFiles(fileList) {
+    [...fileList].filter(f => f.type.startsWith("image/")).forEach(file => {
+      const id = ++nextId;
+      images.push({ id, file, url: URL.createObjectURL(file) });
+      if (mainId === null) mainId = id;
+    });
+    render();
+  }
+
+  function render() {
+    grid.innerHTML = "";
+    images.forEach((image, index) => {
+      const card = document.createElement("article");
+      const isMain = image.id === mainId;
+      card.className = "news-image-item";
+      card.draggable = true;
+      card.dataset.id = image.id;
+      card.innerHTML = `
+        <div class="news-image-preview">
+          <img src="${image.url}" alt="Yangilik rasmi ${index + 1}">
+          ${isMain ? '<span class="main-image-badge"><i class="fa-solid fa-star"></i> Asosiy</span>' : ""}
+          <button type="button" class="remove-image-button" data-action="remove" title="Rasmni o‘chirish"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="news-image-item-footer">
+          <span class="image-number">Rasm ${index + 1}</span>
+          <button type="button" class="set-main-button ${isMain ? "is-main" : ""}" data-action="main" ${isMain ? "disabled" : ""}>
+            <i class="fa-solid fa-star"></i> ${isMain ? "Asosiy rasm" : "Asosiy qilish"}
+          </button>
+        </div>`;
+
+      card.addEventListener("click", e => {
+        const action = e.target.closest("[data-action]")?.dataset.action;
+        if (action === "remove") removeImage(image.id);
+        if (action === "main") { mainId = image.id; render(); }
+      });
+
+      card.addEventListener("dragstart", () => { card.classList.add("is-sorting"); card.dataset.dragged = "true"; });
+      card.addEventListener("dragend", () => {
+        card.classList.remove("is-sorting");
+        document.querySelectorAll(".news-image-item").forEach(x => x.classList.remove("drag-over"));
+        card.dataset.dragged = "false";
+      });
+      card.addEventListener("dragover", e => {
+        e.preventDefault();
+        const dragged = document.querySelector('[data-dragged="true"]');
+        if (dragged && dragged !== card) card.classList.add("drag-over");
+      });
+      card.addEventListener("dragleave", () => card.classList.remove("drag-over"));
+      card.addEventListener("drop", e => {
+        e.preventDefault(); card.classList.remove("drag-over");
+        const dragged = document.querySelector('[data-dragged="true"]');
+        if (!dragged || dragged === card) return;
+        const from = images.findIndex(x => x.id === Number(dragged.dataset.id));
+        const to = images.findIndex(x => x.id === Number(card.dataset.id));
+        const [moved] = images.splice(from, 1);
+        images.splice(to, 0, moved);
+        render();
+      });
+      grid.appendChild(card);
+    });
+    count.textContent = `${images.length} ta rasm`;
+  }
+
+  function removeImage(id) {
+    const removed = images.find(x => x.id === id);
+    if (removed) URL.revokeObjectURL(removed.url);
+    images = images.filter(x => x.id !== id);
+    if (mainId === id) mainId = images.length ? images[0].id : null;
+    render();
+  }
+})();
+</script>
+
+</body>
 </html>
