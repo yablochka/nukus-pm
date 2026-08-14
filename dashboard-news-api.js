@@ -7,9 +7,6 @@
 
   if (!form || !imageInput || !imageGrid) return;
 
-  // The uploader resets input.value after every selection, so keep the actual
-  // File objects separately. Capture phase lets us see files before the
-  // existing uploader clears the input.
   let selectedFiles = [];
 
   imageInput.addEventListener("change", (event) => {
@@ -18,7 +15,35 @@
 
   const dropzone = document.getElementById("imageDropzone");
   dropzone?.addEventListener("drop", (event) => {
-    selectedFiles.push(...Array.from(event.dataTransfer.files).filter(file => file.type.startsWith("image/")));
+    selectedFiles.push(
+      ...Array.from(event.dataTransfer.files).filter(file => file.type.startsWith("image/"))
+    );
+  }, true);
+
+  imageGrid.addEventListener("click", (event) => {
+    const removeButton = event.target.closest('[data-action="remove"]');
+    if (!removeButton) return;
+
+    const card = removeButton.closest(".news-image-item");
+    if (!card) return;
+
+    const index = Array.from(imageGrid.children).indexOf(card);
+    if (index >= 0) selectedFiles.splice(index, 1);
+  }, true);
+
+  imageGrid.addEventListener("drop", (event) => {
+    const dragged = imageGrid.querySelector('[data-dragged="true"]');
+    const target = event.target.closest?.(".news-image-item");
+
+    if (!dragged || !target || dragged === target) return;
+
+    const from = Array.from(imageGrid.children).indexOf(dragged);
+    const to = Array.from(imageGrid.children).indexOf(target);
+
+    if (from < 0 || to < 0) return;
+
+    const [moved] = selectedFiles.splice(from, 1);
+    selectedFiles.splice(to, 0, moved);
   }, true);
 
   const status = document.createElement("p");
@@ -31,18 +56,12 @@
     await createNews();
   });
 
-  form.querySelectorAll(".form-actions button").forEach(button => {
-    button.addEventListener("click", async () => {
-      await createNews();
-    });
-  });
-
   async function createNews() {
-    const fields = form.querySelectorAll("input, textarea");
-    const title = fields[0]?.value.trim();
+    const title = form.querySelector('input[type="text"]')?.value.trim();
     const newsDate = form.querySelector('input[type="date"]')?.value;
-    const shortDescription = form.querySelectorAll("textarea")[0]?.value.trim();
-    const content = form.querySelectorAll("textarea")[1]?.value.trim();
+    const textareas = form.querySelectorAll("textarea");
+    const shortDescription = textareas[0]?.value.trim();
+    const content = textareas[1]?.value.trim();
 
     if (!title || !newsDate || !shortDescription || !content) {
       setStatus("Barcha matn maydonlarini to‘ldiring.", true);
@@ -83,13 +102,22 @@
       }
 
       setStatus(`Yangilik muvaffaqiyatli saqlandi. ID: ${result.id}`, false);
+      clearUploader();
       form.reset();
-      selectedFiles = [];
     } catch (error) {
       setStatus(error.message || "API bilan bog‘lanib bo‘lmadi.", true);
     } finally {
       setButtonsDisabled(false);
     }
+  }
+
+  function clearUploader() {
+    imageGrid
+      .querySelectorAll('[data-action="remove"]')
+      .forEach(button => button.click());
+
+    selectedFiles = [];
+    imageInput.value = "";
   }
 
   function setStatus(message, isError) {
