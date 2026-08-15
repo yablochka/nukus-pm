@@ -26,5 +26,17 @@
 .info-card:hover,.content-card:hover,.teacher-card:hover,.gallery-card:hover,.alumni-card:hover,.calendar-card:hover,.stat-card:hover,.result-card:hover,.announcement-card:hover,.contact-card:hover { transform:translateY(-5px); box-shadow:0 20px 42px rgba(18,43,68,.10); }
 .section-heading h2,.statistics-heading h2 { font-family:"Playfair Display",serif; color:var(--primary); }
 .section-label { letter-spacing:.12em; font-weight:800; }
+
+/* Exact News hero visual system for every inner page. */
+.page-hero { position:relative; height:340px; min-height:340px; display:flex; align-items:center; background:linear-gradient(rgba(8,29,53,.75),rgba(8,29,53,.75)),url("images/school.jpg") center/cover no-repeat; color:white; }
+.page-hero-content { position:relative; z-index:2; width:min(100% - 40px,var(--container)); max-width:var(--container); margin:0 auto; padding:0; }
+.page-hero h1 { max-width:none; color:white; font-family:"Playfair Display",serif; font-size:56px; line-height:1.08; margin:15px 0; }
+.page-hero p { max-width:650px; margin:0; color:rgba(255,255,255,.8); font-size:16px; }
+.page-hero .section-label { margin-bottom:0; color:var(--gold); }
+.page-hero .breadcrumb { margin-top:25px; display:flex; gap:10px; font-size:14px; }
+.page-hero .breadcrumb a { color:var(--gold-light); }
+@media(max-width:760px){.page-hero{height:330px;min-height:330px}.page-hero-content{width:min(100% - 32px,var(--container))}.page-hero h1{font-size:44px}}
+@media(max-width:480px){.page-hero{height:310px;min-height:310px}.page-hero h1{font-size:38px}.page-hero p{font-size:14px}}
+
 @media (max-width:900px) { .page-cards-grid{grid-template-columns:1fr;} .page-section,.about-section{padding-top:64px;padding-bottom:64px;} }
 @media (max-width:600px) { .page-card,.about-section .about-content{padding:26px 22px;} }
