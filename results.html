@@ -3,117 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Nukus Prezident maktabi portali" />
+    <meta name="description" content="Nukus Prezident maktabi natijalari" />
     <title>Natijalar | Nukus Prezident maktabi</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
   </head>
   <body>
-    <div class="top-bar">
-      <div class="container top-bar-content">
-        <div class="top-contact">
-          <span><i class="fa-solid fa-location-dot"></i> Nukus shahri Almazar 1A</span>
-          <span><i class="fa-solid fa-envelope"></i> info@nukusps.uz</span>
-          <span><i class="fa-solid fa-phone"></i> +998 61 000 00 00</span>
-        </div>
-        <div class="languages">
-          <i class="fa-solid fa-globe"></i>
-          <button class="language active">UZ</button>
-          <button class="language">QAA</button>
-          <button class="language">EN</button>
-        </div>
-      </div>
-    </div>
-    <header class="header">
-      <div class="container header-content">
-        <a href="index.html" class="logo">
-          <div class="logo-icon">PS</div>
-          <div class="logo-text"><strong>Nukus Prezident maktabi</strong><span>Rasmiy portal</span></div>
-        </a>
-        <nav class="navigation" id="navigation">
-          <a href="index.html" class="nav-link">Bosh sahifa</a>
-          <a href="admission.html" class="nav-link ">Qabul</a>
-          <a href="results.html" class="nav-link active">Natijalar</a>
-          <a href="news.html" class="nav-link ">Yangiliklar</a>
-          <a href="teachers.html" class="nav-link ">O‘qituvchilar</a>
-          <a href="statistics.html" class="nav-link ">Statistika</a>
-        </nav>
-        <button class="menu-button" id="menuButton" aria-label="Menyuni ochish">☰</button>
-      </div>
-    </header>
+    <div class="top-bar"><div class="container top-bar-content"><div class="top-contact"><span><i class="fa-solid fa-location-dot"></i> Nukus shahri</span><span><i class="fa-solid fa-envelope"></i> info@nukuspm.uz</span><span><i class="fa-solid fa-phone"></i> +998 (61) 224 90 23</span></div><div class="languages"><i class="fa-solid fa-globe"></i><button class="language active">UZ</button><button class="language">QAA</button><button class="language">EN</button></div></div></div>
+    <header class="header"><div class="container header-content"><a href="index.html" class="logo"><div class="logo-icon"><img src="images/PSN LOGO.png" alt="Nukus Prezident maktabi logotipi"></div><div class="logo-text"><strong>Nukus Prezident maktabi</strong><span>Rasmiy portal</span></div></a><nav class="navigation" id="navigation"><a href="index.html" class="nav-link">Bosh sahifa</a><a href="admission.html" class="nav-link">Qabul</a><a href="results.html" class="nav-link active">Natijalar</a><a href="news/index.html" class="nav-link">Yangiliklar</a><a href="students.html" class="nav-link">O‘quvchilar</a><a href="statistics.html" class="nav-link">Statistika</a></nav><button class="menu-button" id="menuButton" aria-label="Menyuni ochish">☰</button></div></header>
     <main>
-      <section class="page-hero results-page-hero">
-        <div class="container page-hero-content">
-          <span class="section-label gold-label">Imtihon natijalari</span>
-          <h1>Natijalar</h1>
-          <p>Ariza yoki ruxsatnoma raqami orqali imtihon natijalarini tekshirish sahifasi.</p>
-        </div>
-      </section>
-      <section class="section results-section">
-        <div class="container results-grid">
-          <div class="results-content"><span class="section-label">Tekshiruv</span><h2>Natijangizni tekshiring</h2><p>Raqamingizni kiriting va backend ulangandan so‘ng natija shu yerda ko‘rsatiladi.</p></div>
-          <form class="result-form" id="resultForm"><label for="applicationId">Ariza yoki ruxsatnoma raqami</label><div class="result-input-group"><input type="text" id="applicationId" placeholder="Masalan: NPS-2026-001" required /><button type="submit">Tekshirish</button></div><p class="form-message" id="formMessage"></p></form>
-        </div>
-      </section>
-
-      <section class="section sheet-results-section">
-        <div class="container">
-          <div class="section-heading">
-            <div>
-              <span class="section-label">Google Sheets</span>
-              <h2>IELTS/SAT natijalari</h2>
-              <p class="sheet-results-description">
-                Ma’lumotlar Google Sheet jadvalidan avtomatik yuklanadi.
-              </p>
-            </div>
-            <a
-              href="https://docs.google.com/spreadsheets/d/1H61o__fVhkTjwFBAh7cf3AMC9AFo5JEN1y_agPzveoI/edit?gid=540117896#gid=540117896"
-              class="view-all"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Jadvalni ochish
-              <span>→</span>
-            </a>
-          </div>
-
-          <p class="sheet-status" id="sheetStatus">Google Sheet yuklanmoqda...</p>
-
-          <div class="sheet-stats-grid" id="sheetStatsGrid" aria-label="Google Sheet statistikasi"></div>
-
-          <div class="dashboard-table-wrap sheet-results-table-wrap">
-            <table class="dashboard-table sheet-results-table">
-              <thead>
-                <tr>
-                  <th>Yil</th>
-                  <th>F.I.Sh</th>
-                  <th>IELTS</th>
-                  <th>SAT</th>
-                </tr>
-              </thead>
-              <tbody id="sheetResultsBody">
-                <tr>
-                  <td colspan="4">Ma’lumotlar yuklanmoqda...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
+      <section class="page-hero results-page-hero"><div class="container page-hero-content"><span class="section-label gold-label">Natijalar</span><h1>Natijalar</h1><p>Ochiq manbalarda e’lon qilingan o‘quvchi yutuqlari va mavjud natijalar.</p></div></section>
+      <section class="section results-section"><div class="container results-grid"><div class="results-content"><span class="section-label">Imtihon natijalari</span><h2>Natijangizni tekshiring</h2><p>Shaxsiy imtihon natijalarini ko‘rsatish uchun backenddagi natijalar bazasi bilan integratsiya talab qilinadi. Hozircha bu forma demo rejimida qoldirilgan.</p></div><form class="result-form" id="resultForm"><label for="applicationId">Ariza yoki ruxsatnoma raqami</label><div class="result-input-group"><input type="text" id="applicationId" placeholder="Ariza raqami" required /><button type="submit">Tekshirish</button></div><p class="form-message" id="formMessage"></p></form></div></section>
+      <section class="section page-section"><div class="container"><div class="section-heading"><div><span class="section-label">Tasdiqlangan yutuqlar</span><h2>2026-yil natijalaridan</h2></div></div><div class="page-cards-grid"><article class="page-card"><span>01</span><h2>Aynazar Begmanov</h2><p>11-sinf o‘quvchisi AQShning Colorado universitetiga o‘qishga qabul qilingan.</p></article><article class="page-card"><span>02</span><h2>Jumabaev Jaqsılıq</h2><p>8-sinf o‘quvchisi “Al-Xorazmiy” olimpiadasining Qoraqalpog‘iston bosqichida matematika fanidan 2-o‘rinni egallagan.</p></article><article class="page-card"><span>03</span><h2>Begmuratova Zoya</h2><p>Nukus Prezident maktabi vakili sifatida “Ma’naviyat yetakchisi” respublika tanlovida II o‘rin sohibi.</p></article></div></div></section>
     </main>
-    <footer class="footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <a href="index.html" class="logo footer-logo"><div class="logo-icon">PS</div><div class="logo-text"><strong>Nukus Prezident maktabi</strong><span>Rasmiy portal</span></div></a>
-          <p>Iqtidorli yoshlar uchun zamonaviy ta’lim, innovatsiya va rivojlanish markazi.</p>
-        </div>
-        <div class="footer-column"><h3>Asosiy bo‘limlar</h3><a href="index.html">Bosh sahifa</a><a href="admission.html">Qabul</a><a href="results.html">Natijalar</a><a href="news.html">Yangiliklar</a></div>
-        <div class="footer-column"><h3>Foydali havolalar</h3><a href="teachers.html">O‘qituvchilar</a><a href="statistics.html">Statistika</a><a href="index.html#home">Maktab haqida</a><a href="index.html#home">Bog‘lanish</a></div>
-        <div class="footer-column"><h3>Bog‘lanish</h3><p>Nukus shahri, Qoraqalpog‘iston Respublikasi</p><p>+998 61 000 00 00</p><p>info@nukusps.uz</p></div>
-      </div>
-      <div class="footer-bottom"><div class="container footer-bottom-content"><p>© 2026 Nukus Prezident maktabi. Barcha huquqlar himoyalangan.</p><p>Rasmiy portal</p></div></div>
-    </footer>
+    <footer class="footer"><div class="container footer-grid"><div class="footer-brand"><a href="index.html" class="logo footer-logo"><div class="logo-icon"><img src="images/PSN LOGO.png" alt=""></div><div class="logo-text"><strong>Nukus Prezident maktabi</strong><span>Rasmiy portal</span></div></a><p>Iqtidorli yoshlar uchun zamonaviy ta’lim, innovatsiya va rivojlanish maskani.</p></div><div class="footer-column"><h3>Asosiy bo‘limlar</h3><a href="index.html">Bosh sahifa</a><a href="admission.html">Qabul</a><a href="results.html">Natijalar</a><a href="news/index.html">Yangiliklar</a></div><div class="footer-column"><h3>Foydali havolalar</h3><a href="students.html">O‘quvchilar</a><a href="statistics.html">Statistika</a><a href="index.html#home">Maktab haqida</a></div><div class="footer-column"><h3>Bog‘lanish</h3><p>Nukus shahri, Qoraqalpog‘iston Respublikasi</p><p>+998 (61) 224 90 23</p><p>info@nukuspm.uz</p></div></div><div class="footer-bottom"><div class="container footer-bottom-content"><p>© 2026 Nukus Prezident maktabi. Barcha huquqlar himoyalangan.</p><p>Rasmiy portal</p></div></div></footer>
     <script src="script.js"></script>
   </body>
 </html>
