@@ -1,5 +1,6 @@
 @import url("base.css");
 @import url("section-overrides.css");
+@import url("hero-consistency.css");
 
 /* Shared inner-page hero. */
 .page-hero { position:relative; min-height:360px; display:flex; align-items:center; overflow:hidden; background:linear-gradient(90deg,rgba(6,25,46,.92),rgba(16,46,82,.78) 55%,rgba(16,46,82,.38)),url("images/school.jpg") center/cover no-repeat; color:var(--white); }
