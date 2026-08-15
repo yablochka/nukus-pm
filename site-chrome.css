@@ -1,0 +1,11 @@
+/* Shared top bar and logo fallback for every public page. */
+.top-bar{background:var(--primary-dark);color:rgba(255,255,255,.8);font-size:13px}
+.top-bar-content{min-height:38px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.top-contact{display:flex;align-items:center;gap:25px}
+.top-contact i{color:var(--gold-light)}
+.languages{display:flex;align-items:center;gap:4px}
+.language{border:0;background:transparent;color:rgba(255,255,255,.7);padding:5px 8px;font-size:12px;font-weight:600}
+.language:hover,.language.active{color:var(--gold-light)}
+.logo-icon{width:50px;height:50px;max-width:50px;max-height:50px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:0;background:#fff}
+.logo-icon img{width:46px;height:46px;object-fit:contain;display:block}
+@media(max-width:760px){.top-contact{gap:12px}.top-contact span{font-size:11px}.languages{gap:0}.language{padding:4px 5px;font-size:11px}.logo-icon{width:44px;height:44px}.logo-icon img{width:40px;height:40px}}
