@@ -1,0 +1,37 @@
+/* Shared visual language for all inner-page sections. */
+.page-section,
+.about-section,
+.page-section.section,
+.section.page-section { background: var(--background); }
+
+.page-section .container,
+.about-section .container { position: relative; }
+
+.page-cards-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+
+.page-card { position:relative; min-height:250px; padding:34px 30px 30px; background:#fff; border:1px solid var(--border); box-shadow:0 12px 30px rgba(18,43,68,.06); transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease; overflow:hidden; }
+.page-card::after { content:""; position:absolute; left:0; right:0; bottom:0; height:4px; background:var(--gold); transform:scaleX(0); transform-origin:left; transition:transform .25s ease; }
+.page-card:hover { transform:translateY(-6px); box-shadow:0 20px 44px rgba(18,43,68,.11); border-color:rgba(18,43,68,.16); }
+.page-card:hover::after { transform:scaleX(1); }
+.page-card > span:first-child { display:inline-flex; margin-bottom:20px; color:var(--gold); font-size:12px; font-weight:800; letter-spacing:.12em; }
+.page-card h2 { margin-bottom:12px; font-family:"Playfair Display",serif; font-size:27px; color:var(--primary); }
+.page-card p { color:var(--muted); line-height:1.75; }
+
+.page-section,
+.about-section { padding-top:86px; padding-bottom:86px; }
+.about-section { background:#f6f8fb; }
+.about-section .about-grid { align-items:stretch; gap:28px; }
+.about-section .about-content { padding:34px; background:#fff; border:1px solid var(--border); box-shadow:0 12px 30px rgba(18,43,68,.055); }
+.about-section .about-content h2 { font-family:"Playfair Display",serif; color:var(--primary); line-height:1.18; }
+.about-section .about-content p { color:var(--muted); line-height:1.8; }
+
+.page-content-grid > *, .content-grid > *, .info-grid > *, .cards-grid > *, .teachers-grid > *, .gallery-grid > *, .alumni-grid > *, .statistics-grid > *, .calendar-grid > * { border:1px solid var(--border); background:#fff; box-shadow:0 12px 30px rgba(18,43,68,.055); }
+
+.info-card, .content-card, .teacher-card, .gallery-card, .alumni-card, .calendar-card, .stat-card, .result-card, .announcement-card, .contact-card { background:#fff; border:1px solid var(--border); box-shadow:0 12px 30px rgba(18,43,68,.055); transition:transform .25s ease,box-shadow .25s ease; }
+.info-card:hover, .content-card:hover, .teacher-card:hover, .gallery-card:hover, .alumni-card:hover, .calendar-card:hover, .stat-card:hover, .result-card:hover, .announcement-card:hover, .contact-card:hover { transform:translateY(-5px); box-shadow:0 20px 42px rgba(18,43,68,.10); }
+
+.section-heading h2, .statistics-heading h2 { font-family:"Playfair Display",serif; color:var(--primary); }
+.section-label { letter-spacing:.12em; font-weight:800; }
+
+@media (max-width:900px) { .page-cards-grid{grid-template-columns:1fr;} .page-section,.about-section{padding-top:64px;padding-bottom:64px;} }
+@media (max-width:600px) { .page-card,.about-section .about-content{padding:26px 22px;} }
