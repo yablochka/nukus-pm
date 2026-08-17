@@ -1,5 +1,7 @@
 (() => {
-  const API_BASE_URL = window.NEWS_API_BASE_URL || "http://127.0.0.1:8000";
+  // Production News API.
+  // Override this global before loading this script if the backend URL changes.
+  const API_BASE_URL = window.NEWS_API_BASE_URL || "https://nukuspm.uz/api";
 
   const form = document.getElementById("newsForm");
   const imageInput = document.getElementById("newsImages");
