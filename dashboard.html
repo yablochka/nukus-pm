@@ -28,7 +28,7 @@
         <div>
           <span class="section-label">Matbuot markazi</span>
           <h1>Yangiliklar dashboardi</h1>
-          <p>Maktab yangiliklarini yaratish, tahrirlash va kuzatish uchun yagona boshqaruv oynasi.</p>
+          <p>Maktab yangiliklarini yaratish, tahrirlash, o‘chirish va kuzatish uchun yagona boshqaruv oynasi.</p>
         </div>
         <div class="dashboard-header-actions">
           <button class="dashboard-icon-button" aria-label="Bildirishnomalar"><i class="fa-regular fa-bell"></i></button>
@@ -37,38 +37,39 @@
       </header>
 
       <section class="dashboard-stats" id="overview" aria-label="Yangiliklar statistikasi">
-        <article class="dashboard-stat-card"><span class="dashboard-stat-icon"><i class="fa-solid fa-newspaper"></i></span><div><strong>128</strong><p>Jami yangiliklar</p></div></article>
-        <article class="dashboard-stat-card"><span class="dashboard-stat-icon"><i class="fa-solid fa-eye"></i></span><div><strong>24.6k</strong><p>Oylik ko‘rishlar</p></div></article>
-        <article class="dashboard-stat-card"><span class="dashboard-stat-icon"><i class="fa-solid fa-clock"></i></span><div><strong>7</strong><p>Rejalashtirilgan</p></div></article>
-        <article class="dashboard-stat-card"><span class="dashboard-stat-icon"><i class="fa-solid fa-star"></i></span><div><strong>18</strong><p>Asosiy sahifada</p></div></article>
+        <article class="dashboard-stat-card"><span class="dashboard-stat-icon"><i class="fa-solid fa-newspaper"></i></span><div><strong id="totalNewsStat">0</strong><p>Jami yangiliklar</p></div></article>
+        <article class="dashboard-stat-card"><span class="dashboard-stat-icon"><i class="fa-solid fa-eye"></i></span><div><strong id="viewsStat">—</strong><p>Oylik ko‘rishlar</p></div></article>
+        <article class="dashboard-stat-card"><span class="dashboard-stat-icon"><i class="fa-solid fa-clock"></i></span><div><strong id="draftStat">0</strong><p>Qoralamalar</p></div></article>
+        <article class="dashboard-stat-card"><span class="dashboard-stat-icon"><i class="fa-solid fa-star"></i></span><div><strong id="featuredStat">0</strong><p>Asosiy sahifada</p></div></article>
       </section>
 
       <section class="dashboard-grid">
         <article class="dashboard-panel create-news-panel" id="create-news">
           <div class="dashboard-panel-heading">
-            <div><span class="section-label">Yangi maqola</span><h2>Yangilik qo‘shish</h2></div>
-            <span class="panel-badge">Qoralama</span>
+            <div><span class="section-label" id="formEyebrow">Yangi maqola</span><h2 id="formTitle">Yangilik qo‘shish</h2></div>
+            <span class="panel-badge" id="formModeBadge">Yangi</span>
           </div>
 
           <form class="news-dashboard-form" id="newsForm">
+            <input type="hidden" id="editingNewsId" />
             <label>
               Sarlavha
-              <input type="text" placeholder="Yangilik sarlavhasini kiriting" />
+              <input id="newsTitle" type="text" placeholder="Yangilik sarlavhasini kiriting" required />
             </label>
 
             <label>
               Sana
-              <input type="date" value="2026-08-12" />
+              <input id="newsDate" type="date" required />
             </label>
 
             <label>
               Qisqa tavsif
-              <textarea placeholder="Yangilik uchun qisqa annotatsiya"></textarea>
+              <textarea id="newsShortDescription" placeholder="Yangilik uchun qisqa annotatsiya" required></textarea>
             </label>
 
             <label>
               To‘liq yangilik matni
-              <textarea class="news-full-content" placeholder="Yangilikning batafsil mazmunini kiriting..."></textarea>
+              <textarea id="newsContent" class="news-full-content" placeholder="Yangilikning batafsil mazmunini kiriting..." required></textarea>
             </label>
 
             <div class="news-media-field">
@@ -94,20 +95,20 @@
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="button button-primary">Chop etish</button>
-              <button type="submit" class="button dashboard-secondary-button">Saqlash</button>
+              <button type="submit" class="button button-primary" id="saveNewsButton">Chop etish</button>
+              <button type="button" class="button dashboard-secondary-button" id="cancelEditButton" hidden>Bekor qilish</button>
             </div>
           </form>
         </article>
 
         <article class="dashboard-panel featured-news-panel">
           <div class="dashboard-panel-heading"><div><span class="section-label">Asosiy yangilik</span><h2>Hafta diqqat markazida</h2></div></div>
-          <div class="featured-news-card">
-            <div class="featured-news-image"><span class="news-category">Yutuqlar</span></div>
+          <div class="featured-news-card" id="featuredNewsCard">
+            <div class="featured-news-image"><span class="news-category">—</span></div>
             <div class="featured-news-content">
-              <div class="news-date">10-avgust, 2026</div>
-              <h3>O‘quvchilarimiz STEM haftaligida innovatsion loyihalarini namoyish etdi</h3>
-              <p>Dashboard orqali ushbu yangilikni bosh sahifaga chiqarish, tahrirlash yoki chop etish vaqtini rejalashtirish mumkin.</p>
+              <div class="news-date">—</div>
+              <h3>Yangilik yuklanmoqda...</h3>
+              <p>Asosiy yangilik API orqali avtomatik ko‘rsatiladi.</p>
             </div>
           </div>
         </article>
@@ -115,16 +116,18 @@
 
       <section class="dashboard-panel news-list-panel" id="news-list">
         <div class="dashboard-panel-heading">
-          <div><span class="section-label">Kontent nazorati</span><h2>So‘nggi yangiliklar ro‘yxati</h2></div>
-          <div class="dashboard-filter-group" aria-label="Yangilik filtrlari"><button class="filter-button active">Barchasi</button><button class="filter-button">Chop etilgan</button><button class="filter-button">Qoralama</button></div>
+          <div><span class="section-label">Kontent nazorati</span><h2>Yangiliklar ro‘yxati</h2></div>
+          <div class="dashboard-filter-group" aria-label="Yangilik filtrlari">
+            <button type="button" class="filter-button active" data-filter="all">Barchasi</button>
+            <button type="button" class="filter-button" data-filter="published">Chop etilgan</button>
+            <button type="button" class="filter-button" data-filter="draft">Qoralama</button>
+          </div>
         </div>
         <div class="dashboard-table-wrap">
           <table class="dashboard-table">
             <thead><tr><th>Sarlavha</th><th>Kategoriya</th><th>Sana</th><th>Holat</th><th>Ko‘rishlar</th><th>Amal</th></tr></thead>
-            <tbody>
-              <tr><td>Yangi o‘quv yiliga tayyorgarlik ishlari boshlandi</td><td>Maktab hayoti</td><td>28-iyul, 2026</td><td><span class="status-pill published">Chop etilgan</span></td><td>3 420</td><td><button class="table-action">Tahrirlash</button></td></tr>
-              <tr><td>Xalqaro olimpiadada yuqori natija</td><td>Yutuqlar</td><td>22-iyul, 2026</td><td><span class="status-pill published">Chop etilgan</span></td><td>5 180</td><td><button class="table-action">Tahrirlash</button></td></tr>
-              <tr><td>Robototexnika laboratoriyasida ochiq dars</td><td>Tadbirlar</td><td>18-avgust, 2026</td><td><span class="status-pill draft">Qoralama</span></td><td>—</td><td><button class="table-action">Tahrirlash</button></td></tr>
+            <tbody id="newsTableBody">
+              <tr><td colspan="6">Yangiliklar yuklanmoqda...</td></tr>
             </tbody>
           </table>
         </div>
@@ -132,47 +135,5 @@
     </main>
 
     <script src="dashboard-news-api.js"></script>
-    <script>
-    (() => {
-      const input = document.getElementById("newsImages");
-      const dropzone = document.getElementById("imageDropzone");
-      const choose = document.getElementById("chooseImages");
-      const grid = document.getElementById("newsImagesGrid");
-      const count = document.getElementById("imageCount");
-      if (!input || !dropzone || !choose || !grid) return;
-      let images = [];
-      let mainId = null;
-      let nextId = 0;
-      choose.addEventListener("click", () => input.click());
-      input.addEventListener("change", e => { addFiles(e.target.files); input.value = ""; });
-      ["dragenter", "dragover"].forEach(name => dropzone.addEventListener(name, e => { e.preventDefault(); dropzone.classList.add("is-dragging"); }));
-      ["dragleave", "drop"].forEach(name => dropzone.addEventListener(name, e => { e.preventDefault(); if (name === "drop" || !dropzone.contains(e.relatedTarget)) dropzone.classList.remove("is-dragging"); }));
-      dropzone.addEventListener("drop", e => addFiles(e.dataTransfer.files));
-      function addFiles(fileList) {
-        [...fileList].filter(f => f.type.startsWith("image/")).forEach(file => { const id = ++nextId; images.push({ id, file, url: URL.createObjectURL(file) }); if (mainId === null) mainId = id; });
-        render();
-      }
-      function render() {
-        grid.innerHTML = "";
-        images.forEach((image, index) => {
-          const card = document.createElement("article");
-          const isMain = image.id === mainId;
-          card.className = "news-image-item";
-          card.draggable = true;
-          card.dataset.id = image.id;
-          card.innerHTML = `<div class="news-image-preview"><img src="${image.url}" alt="Yangilik rasmi ${index + 1}">${isMain ? '<span class="main-image-badge"><i class="fa-solid fa-star"></i> Asosiy</span>' : ""}<button type="button" class="remove-image-button" data-action="remove" title="Rasmni o‘chirish"><i class="fa-solid fa-xmark"></i></button></div><div class="news-image-item-footer"><span class="image-number">Rasm ${index + 1}</span><button type="button" class="set-main-button ${isMain ? "is-main" : ""}" data-action="main" ${isMain ? "disabled" : ""}><i class="fa-solid fa-star"></i> ${isMain ? "Asosiy rasm" : "Asosiy qilish"}</button></div>`;
-          card.addEventListener("click", e => { const action = e.target.closest("[data-action]")?.dataset.action; if (action === "remove") removeImage(image.id); if (action === "main") { mainId = image.id; render(); } });
-          card.addEventListener("dragstart", () => { card.classList.add("is-sorting"); card.dataset.dragged = "true"; });
-          card.addEventListener("dragend", () => { card.classList.remove("is-sorting"); document.querySelectorAll(".news-image-item").forEach(x => x.classList.remove("drag-over")); card.dataset.dragged = "false"; });
-          card.addEventListener("dragover", e => { e.preventDefault(); const dragged = document.querySelector('[data-dragged="true"]'); if (dragged && dragged !== card) card.classList.add("drag-over"); });
-          card.addEventListener("dragleave", () => card.classList.remove("drag-over"));
-          card.addEventListener("drop", e => { e.preventDefault(); card.classList.remove("drag-over"); const dragged = document.querySelector('[data-dragged="true"]'); if (!dragged || dragged === card) return; const from = images.findIndex(x => x.id === Number(dragged.dataset.id)); const to = images.findIndex(x => x.id === Number(card.dataset.id)); const [moved] = images.splice(from, 1); images.splice(to, 0, moved); render(); });
-          grid.appendChild(card);
-        });
-        count.textContent = `${images.length} ta rasm`;
-      }
-      function removeImage(id) { const removed = images.find(x => x.id === id); if (removed) URL.revokeObjectURL(removed.url); images = images.filter(x => x.id !== id); if (mainId === id) mainId = images.length ? images[0].id : null; render(); }
-    })();
-    </script>
   </body>
 </html>
