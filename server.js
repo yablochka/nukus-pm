@@ -52,7 +52,10 @@ db.exec(`
 
 app.use(cors());
 app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// The cPanel Node app is mounted at /news.
+// Keep uploaded files under the same public URL prefix.
+app.use("/news/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ======================================================
 // MULTER
@@ -98,7 +101,7 @@ function getNewsImages(newsId) {
     return images.map((image) => ({
         id: image.id,
         filename: image.filename,
-        url: `/uploads/news/${image.filename}`,
+        url: `/news/uploads/news/${image.filename}`,
         is_main: Boolean(image.is_main),
         position: image.position
     }));
@@ -313,7 +316,6 @@ app.put("/news/:id", upload.array("images", 20), (req, res) => {
             });
         }
 
-        // New images were supplied: replace old images.
         if (req.files && req.files.length > 0) {
             const mainIndex = Number(main_image_index ?? 0);
 
@@ -385,7 +387,6 @@ app.put("/news/:id", upload.array("images", 20), (req, res) => {
                 }
             }
         } else {
-            // No new images: keep current images.
             db.prepare(`
                 UPDATE news
                 SET
