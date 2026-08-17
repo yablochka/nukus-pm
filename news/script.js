@@ -1,4 +1,5 @@
 const API_BASE_URL = "https://nukusps.uz";
+const NEWS_COLLECTION_URL = `${API_BASE_URL}/news/`;
 
 // Keep the shared site navigation/header/footer behavior.
 const sharedScript = document.createElement("script");
@@ -29,14 +30,17 @@ function getImageUrl(image) {
     return `${API_BASE_URL}${image.url}`;
 }
 
-function escapeHtml(value = "") {
+// Named locally so it cannot collide with the shared ../script.js helper.
+function escapeNewsHtml(value = "") {
     const div = document.createElement("div");
     div.textContent = value;
     return div.innerHTML;
 }
 
 async function fetchNews() {
-    const response = await fetch(`${API_BASE_URL}/news`, {
+    // cPanel Passenger redirects /news -> /news/. Use the final URL directly
+    // so the browser does not hit a redirect response without CORS headers.
+    const response = await fetch(NEWS_COLLECTION_URL, {
         headers: {
             Accept: "application/json"
         }
@@ -76,11 +80,11 @@ function renderNewsCards(newsList) {
             </div>
 
             <div class="news-content">
-                <div class="news-date">${escapeHtml(formatDate(news.date))}</div>
+                <div class="news-date">${escapeNewsHtml(formatDate(news.date))}</div>
 
-                <h3>${escapeHtml(news.title)}</h3>
+                <h3>${escapeNewsHtml(news.title)}</h3>
 
-                <p>${escapeHtml(news.short_description)}</p>
+                <p>${escapeNewsHtml(news.short_description)}</p>
 
                 <a href="detail.html?id=${encodeURIComponent(news.id)}" class="news-link">
                     Batafsil o‘qish →
@@ -175,7 +179,7 @@ async function renderNewsDetail() {
         if (date) {
             date.innerHTML = `
                 <i class="fa-regular fa-calendar"></i>
-                ${escapeHtml(formatDate(news.date))}
+                ${escapeNewsHtml(formatDate(news.date))}
             `;
         }
 
