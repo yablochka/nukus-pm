@@ -50,7 +50,58 @@ db.exec(`
 // MIDDLEWARE
 // ======================================================
 
-app.use(cors());
+const allowedOrigins = new Set([
+    "https://nukuspmweb.netlify.app",
+    "https://nukusps.uz",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173"
+]);
+
+const corsOptions = {
+    origin(origin, callback) {
+        // Allow requests without an Origin header (direct browser/curl/server requests).
+        if (!origin || allowedOrigins.has(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error("CORS origin not allowed"));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+
+// Explicitly keep the CORS headers on every API/static response as well.
+// This is useful behind cPanel/Passenger where proxy handling can otherwise
+// make the browser response lose the CORS header.
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+
+    if (origin && allowedOrigins.has(origin)) {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+        res.setHeader("Vary", "Origin");
+    }
+
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, Accept"
+    );
+
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(204);
+    }
+
+    next();
+});
+
 app.use(express.json());
 
 // The cPanel Node app is mounted at /news.
@@ -473,6 +524,12 @@ app.use((error, req, res, next) => {
     if (error instanceof multer.MulterError) {
         return res.status(400).json({
             detail: error.message
+        });
+    }
+
+    if (error.message === "CORS origin not allowed") {
+        return res.status(403).json({
+            detail: "CORS origin not allowed"
         });
     }
 
