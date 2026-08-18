@@ -1,5 +1,5 @@
-const API_BASE_URL = "https://nukusps.uz";
-const NEWS_COLLECTION_URL = `${API_BASE_URL}/news/`;
+const API_BASE_URL = "https://nukusps.uz/api/news";
+const NEWS_COLLECTION_URL = API_BASE_URL;
 
 // Keep the shared site navigation/header/footer behavior.
 const sharedScript = document.createElement("script");
@@ -38,8 +38,6 @@ function escapeNewsHtml(value = "") {
 }
 
 async function fetchNews() {
-    // cPanel Passenger redirects /news -> /news/. Use the final URL directly
-    // so the browser does not hit a redirect response without CORS headers.
     const response = await fetch(NEWS_COLLECTION_URL, {
         headers: {
             Accept: "application/json"
@@ -155,7 +153,7 @@ async function renderNewsDetail() {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/news/${encodeURIComponent(id)}`, {
+        const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(id)}`, {
             headers: {
                 Accept: "application/json"
             }
