@@ -8,12 +8,8 @@ const crypto = require("crypto");
 
 const app = express();
 
-// ======================================================
-// CONFIG
-// ======================================================
-
 const PORT = process.env.PORT || 8000;
-
+const PUBLIC_API_ORIGIN = process.env.PUBLIC_API_ORIGIN || "https://nukusps.uz";
 const UPLOAD_DIR = path.join(__dirname, "uploads", "news");
 
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
@@ -47,7 +43,7 @@ db.exec(`
 `);
 
 // ======================================================
-// MIDDLEWARE
+// CORS / MIDDLEWARE
 // ======================================================
 
 const allowedOrigins = new Set([
@@ -59,25 +55,18 @@ const allowedOrigins = new Set([
     "http://127.0.0.1:5173"
 ]);
 
-const corsOptions = {
+app.use(cors({
     origin(origin, callback) {
-        // Allow requests without an Origin header (direct browser/curl/server requests).
         if (!origin || allowedOrigins.has(origin)) {
             return callback(null, true);
         }
-
         return callback(new Error("CORS origin not allowed"));
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Accept"],
     optionsSuccessStatus: 204
-};
+}));
 
-app.use(cors(corsOptions));
-
-// Explicitly keep the CORS headers on every API/static response as well.
-// This is useful behind cPanel/Passenger where proxy handling can otherwise
-// make the browser response lose the CORS header.
 app.use((req, res, next) => {
     const origin = req.headers.origin;
 
@@ -104,9 +93,12 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// The cPanel Node app is mounted at /news.
-// Keep uploaded files under the same public URL prefix.
-app.use("/news/uploads", express.static(path.join(__dirname, "uploads")));
+// cPanel/Passenger may expose the application under /api/news.
+// These aliases make uploads work whether Passenger keeps or strips the base URI.
+app.use(
+    ["/api/news/uploads", "/news/uploads", "/uploads"],
+    express.static(path.join(__dirname, "uploads"))
+);
 
 // ======================================================
 // MULTER
@@ -152,7 +144,7 @@ function getNewsImages(newsId) {
     return images.map((image) => ({
         id: image.id,
         filename: image.filename,
-        url: `/news/uploads/news/${image.filename}`,
+        url: `${PUBLIC_API_ORIGIN}/api/news/uploads/news/${image.filename}`,
         is_main: Boolean(image.is_main),
         position: image.position
     }));
@@ -181,113 +173,18 @@ function removeFiles(files) {
     }
 }
 
-// ======================================================
-// ROOT
-// ======================================================
-
-app.get("/", (req, res) => {
-    res.json({
-        message: "Nukus Prezident maktabi News API ishlayapti"
-    });
-});
+function parseId(value) {
+    const id = Number(value);
+    return Number.isInteger(id) && id > 0 ? id : null;
+}
 
 // ======================================================
-// CREATE NEWS
+// NEWS ROUTER
 // ======================================================
 
-app.post("/news", upload.array("images", 20), (req, res) => {
-    try {
-        const {
-            title,
-            short_description,
-            content,
-            news_date,
-            main_image_index
-        } = req.body;
+const newsRouter = express.Router();
 
-        if (!title || !short_description || !content || !news_date) {
-            removeFiles(req.files);
-            return res.status(400).json({
-                detail: "Barcha maydonlarni to'ldiring"
-            });
-        }
-
-        if (!req.files || req.files.length === 0) {
-            return res.status(400).json({
-                detail: "Kamida bitta rasm yuklang"
-            });
-        }
-
-        const mainIndex = Number(main_image_index ?? 0);
-
-        if (
-            !Number.isInteger(mainIndex) ||
-            mainIndex < 0 ||
-            mainIndex >= req.files.length
-        ) {
-            removeFiles(req.files);
-            return res.status(400).json({
-                detail: "Asosiy rasm indexi noto'g'ri"
-            });
-        }
-
-        const createNews = db.transaction(() => {
-            const result = db.prepare(`
-                INSERT INTO news (
-                    title,
-                    short_description,
-                    content,
-                    date
-                )
-                VALUES (?, ?, ?, ?)
-            `).run(
-                title,
-                short_description,
-                content,
-                news_date
-            );
-
-            const newsId = result.lastInsertRowid;
-
-            const insertImage = db.prepare(`
-                INSERT INTO news_images (
-                    news_id,
-                    filename,
-                    is_main,
-                    position
-                )
-                VALUES (?, ?, ?, ?)
-            `);
-
-            req.files.forEach((file, index) => {
-                insertImage.run(
-                    newsId,
-                    file.filename,
-                    index === mainIndex ? 1 : 0,
-                    index
-                );
-            });
-
-            return newsId;
-        });
-
-        const newsId = createNews();
-
-        res.status(201).json(getNewsById(newsId));
-    } catch (error) {
-        removeFiles(req.files);
-        console.error(error);
-        res.status(500).json({
-            detail: "Yangilik yaratishda xatolik"
-        });
-    }
-});
-
-// ======================================================
-// GET ALL NEWS
-// ======================================================
-
-app.get("/news", (req, res) => {
+newsRouter.get("/", (req, res) => {
     try {
         const newsList = db.prepare(`
             SELECT id, title, short_description, content, date
@@ -301,57 +198,33 @@ app.get("/news", (req, res) => {
         })));
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            detail: "Yangiliklarni olishda xatolik"
-        });
+        res.status(500).json({ detail: "Yangiliklarni olishda xatolik" });
     }
 });
 
-// ======================================================
-// GET ONE NEWS
-// ======================================================
-
-app.get("/news/:id", (req, res) => {
+newsRouter.get("/:id", (req, res) => {
     try {
-        const id = Number(req.params.id);
+        const id = parseId(req.params.id);
+
+        if (!id) {
+            return res.status(400).json({ detail: "Yangilik ID noto'g'ri" });
+        }
+
         const news = getNewsById(id);
 
         if (!news) {
-            return res.status(404).json({
-                detail: "Yangilik topilmadi"
-            });
+            return res.status(404).json({ detail: "Yangilik topilmadi" });
         }
 
         res.json(news);
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            detail: "Yangilikni olishda xatolik"
-        });
+        res.status(500).json({ detail: "Yangilikni olishda xatolik" });
     }
 });
 
-// ======================================================
-// UPDATE NEWS
-// ======================================================
-
-app.put("/news/:id", upload.array("images", 20), (req, res) => {
+newsRouter.post("/", upload.array("images", 20), (req, res) => {
     try {
-        const id = Number(req.params.id);
-
-        const news = db.prepare(`
-            SELECT *
-            FROM news
-            WHERE id = ?
-        `).get(id);
-
-        if (!news) {
-            removeFiles(req.files);
-            return res.status(404).json({
-                detail: "Yangilik topilmadi"
-            });
-        }
-
         const {
             title,
             short_description,
@@ -362,9 +235,73 @@ app.put("/news/:id", upload.array("images", 20), (req, res) => {
 
         if (!title || !short_description || !content || !news_date) {
             removeFiles(req.files);
-            return res.status(400).json({
-                detail: "Barcha maydonlarni to'ldiring"
+            return res.status(400).json({ detail: "Barcha maydonlarni to'ldiring" });
+        }
+
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ detail: "Kamida bitta rasm yuklang" });
+        }
+
+        const mainIndex = Number(main_image_index ?? 0);
+
+        if (
+            !Number.isInteger(mainIndex) ||
+            mainIndex < 0 ||
+            mainIndex >= req.files.length
+        ) {
+            removeFiles(req.files);
+            return res.status(400).json({ detail: "Asosiy rasm indexi noto'g'ri" });
+        }
+
+        const createNews = db.transaction(() => {
+            const result = db.prepare(`
+                INSERT INTO news (title, short_description, content, date)
+                VALUES (?, ?, ?, ?)
+            `).run(title, short_description, content, news_date);
+
+            const newsId = result.lastInsertRowid;
+
+            const insertImage = db.prepare(`
+                INSERT INTO news_images (news_id, filename, is_main, position)
+                VALUES (?, ?, ?, ?)
+            `);
+
+            req.files.forEach((file, index) => {
+                insertImage.run(newsId, file.filename, index === mainIndex ? 1 : 0, index);
             });
+
+            return newsId;
+        });
+
+        res.status(201).json(getNewsById(createNews()));
+    } catch (error) {
+        removeFiles(req.files);
+        console.error(error);
+        res.status(500).json({ detail: "Yangilik yaratishda xatolik" });
+    }
+});
+
+newsRouter.put("/:id", upload.array("images", 20), (req, res) => {
+    try {
+        const id = parseId(req.params.id);
+
+        if (!id) {
+            removeFiles(req.files);
+            return res.status(400).json({ detail: "Yangilik ID noto'g'ri" });
+        }
+
+        const news = db.prepare(`SELECT * FROM news WHERE id = ?`).get(id);
+
+        if (!news) {
+            removeFiles(req.files);
+            return res.status(404).json({ detail: "Yangilik topilmadi" });
+        }
+
+        const { title, short_description, content, news_date, main_image_index } = req.body;
+
+        if (!title || !short_description || !content || !news_date) {
+            removeFiles(req.files);
+            return res.status(400).json({ detail: "Barcha maydonlarni to'ldiring" });
         }
 
         if (req.files && req.files.length > 0) {
@@ -376,142 +313,95 @@ app.put("/news/:id", upload.array("images", 20), (req, res) => {
                 mainIndex >= req.files.length
             ) {
                 removeFiles(req.files);
-                return res.status(400).json({
-                    detail: "Asosiy rasm indexi noto'g'ri"
-                });
+                return res.status(400).json({ detail: "Asosiy rasm indexi noto'g'ri" });
             }
 
             const oldImages = db.prepare(`
-                SELECT filename
-                FROM news_images
-                WHERE news_id = ?
+                SELECT filename FROM news_images WHERE news_id = ?
             `).all(id);
 
-            const replaceNewsImages = db.transaction(() => {
+            const replaceNews = db.transaction(() => {
                 db.prepare(`
                     UPDATE news
-                    SET
-                        title = ?,
-                        short_description = ?,
-                        content = ?,
-                        date = ?
+                    SET title = ?, short_description = ?, content = ?, date = ?
                     WHERE id = ?
-                `).run(
-                    title,
-                    short_description,
-                    content,
-                    news_date,
-                    id
-                );
+                `).run(title, short_description, content, news_date, id);
 
-                db.prepare(`
-                    DELETE FROM news_images
-                    WHERE news_id = ?
-                `).run(id);
+                db.prepare(`DELETE FROM news_images WHERE news_id = ?`).run(id);
 
                 const insertImage = db.prepare(`
-                    INSERT INTO news_images (
-                        news_id,
-                        filename,
-                        is_main,
-                        position
-                    )
+                    INSERT INTO news_images (news_id, filename, is_main, position)
                     VALUES (?, ?, ?, ?)
                 `);
 
                 req.files.forEach((file, index) => {
-                    insertImage.run(
-                        id,
-                        file.filename,
-                        index === mainIndex ? 1 : 0,
-                        index
-                    );
+                    insertImage.run(id, file.filename, index === mainIndex ? 1 : 0, index);
                 });
             });
 
-            replaceNewsImages();
+            replaceNews();
 
             for (const image of oldImages) {
                 const filePath = path.join(UPLOAD_DIR, image.filename);
-                if (fs.existsSync(filePath)) {
-                    fs.unlinkSync(filePath);
-                }
+                if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
             }
         } else {
             db.prepare(`
                 UPDATE news
-                SET
-                    title = ?,
-                    short_description = ?,
-                    content = ?,
-                    date = ?
+                SET title = ?, short_description = ?, content = ?, date = ?
                 WHERE id = ?
-            `).run(
-                title,
-                short_description,
-                content,
-                news_date,
-                id
-            );
+            `).run(title, short_description, content, news_date, id);
         }
 
         res.json(getNewsById(id));
     } catch (error) {
         removeFiles(req.files);
         console.error(error);
-        res.status(500).json({
-            detail: "Yangilikni yangilashda xatolik"
-        });
+        res.status(500).json({ detail: "Yangilikni yangilashda xatolik" });
     }
 });
 
-// ======================================================
-// DELETE NEWS
-// ======================================================
-
-app.delete("/news/:id", (req, res) => {
+newsRouter.delete("/:id", (req, res) => {
     try {
-        const id = Number(req.params.id);
+        const id = parseId(req.params.id);
 
-        const news = db.prepare(`
-            SELECT *
-            FROM news
-            WHERE id = ?
-        `).get(id);
+        if (!id) {
+            return res.status(400).json({ detail: "Yangilik ID noto'g'ri" });
+        }
+
+        const news = db.prepare(`SELECT * FROM news WHERE id = ?`).get(id);
 
         if (!news) {
-            return res.status(404).json({
-                detail: "Yangilik topilmadi"
-            });
+            return res.status(404).json({ detail: "Yangilik topilmadi" });
         }
 
         const images = db.prepare(`
-            SELECT filename
-            FROM news_images
-            WHERE news_id = ?
+            SELECT filename FROM news_images WHERE news_id = ?
         `).all(id);
 
-        db.prepare(`
-            DELETE FROM news
-            WHERE id = ?
-        `).run(id);
+        db.prepare(`DELETE FROM news WHERE id = ?`).run(id);
 
         for (const image of images) {
             const filePath = path.join(UPLOAD_DIR, image.filename);
-            if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
-            }
+            if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
         }
 
-        res.json({
-            message: "Yangilik o'chirildi"
-        });
+        res.json({ message: "Yangilik o'chirildi" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            detail: "Yangilikni o'chirishda xatolik"
-        });
+        res.status(500).json({ detail: "Yangilikni o'chirishda xatolik" });
     }
+});
+
+// Public API is /api/news.
+// /news is kept as a compatibility alias while the site is migrated.
+// Mounting at / also makes the API work when cPanel Passenger strips its BaseURI.
+app.use("/api/news", newsRouter);
+app.use("/news", newsRouter);
+app.use("/", newsRouter);
+
+app.get("/health", (req, res) => {
+    res.json({ status: "ok" });
 });
 
 // ======================================================
@@ -522,27 +412,17 @@ app.use((error, req, res, next) => {
     console.error(error);
 
     if (error instanceof multer.MulterError) {
-        return res.status(400).json({
-            detail: error.message
-        });
+        return res.status(400).json({ detail: error.message });
     }
 
     if (error.message === "CORS origin not allowed") {
-        return res.status(403).json({
-            detail: "CORS origin not allowed"
-        });
+        return res.status(403).json({ detail: "CORS origin not allowed" });
     }
 
-    return res.status(500).json({
-        detail: error.message || "Server xatosi"
-    });
+    res.status(500).json({ detail: error.message || "Server xatosi" });
 });
-
-// ======================================================
-// SERVER
-// ======================================================
 
 app.listen(PORT, () => {
     console.log(`🚀 Server: http://localhost:${PORT}`);
-    console.log(`📚 API: http://localhost:${PORT}/news`);
+    console.log(`📚 Public API: ${PUBLIC_API_ORIGIN}/api/news`);
 });
