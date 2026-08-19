@@ -1,5 +1,0 @@
-/* Final white logo treatment: do not hide or replace the actual <img>. */
-.header .logo-icon{background:transparent!important;border:0!important;box-shadow:none!important}
-.header .logo-icon img{display:block!important;visibility:visible!important;opacity:1!important;width:116px!important;height:116px!important;object-fit:contain!important;filter:brightness(0) invert(1)!important}
-@media(max-width:980px){.header .logo-icon img{width:92px!important;height:92px!important}}
-@media(max-width:620px){.header .logo-icon img{width:82px!important;height:82px!important}}
