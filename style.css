@@ -1,9 +1,7 @@
+/* Public site stylesheet entrypoint.
+   Dashboard is isolated by .dashboard-body rules in the shared theme. */
 @import url("base.css");
 @import url("section-overrides.css");
-@import url("hero-consistency.css");
 @import url("fergana-theme.css");
 @import url("accessibility.css");
 @import url("news/news-polish.css");
-@import url("logo-standard-fix.css");
-@import url("logo-header-clean.css");
-@import url("header-standard.css");
