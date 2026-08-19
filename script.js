@@ -43,7 +43,6 @@ navigation?.querySelectorAll("a").forEach((link) => link.addEventListener("click
   if (menuButton) menuButton.textContent = "☰";
 }));
 
-/* Counters */
 const counters = document.querySelectorAll(".counter");
 const startCounter = (counter) => {
   const target = Number(counter.dataset.target); let current = 0;
@@ -56,7 +55,6 @@ if ("IntersectionObserver" in window) {
   counters.forEach((counter) => observer.observe(counter));
 }
 
-/* Result form */
 const resultForm = document.getElementById("resultForm");
 const applicationId = document.getElementById("applicationId");
 const formMessage = document.getElementById("formMessage");
@@ -65,7 +63,6 @@ if (resultForm && applicationId && formMessage) resultForm.addEventListener("sub
   formMessage.textContent = value ? `"${value}" raqamli natija backend ulangandan keyin ko‘rsatiladi.` : "Ariza yoki ruxsatnoma raqamini kiriting.";
 });
 
-/* Google Sheet results */
 const sheetStatus = document.getElementById("sheetStatus");
 const sheetStatsGrid = document.getElementById("sheetStatsGrid");
 const sheetResultsBody = document.getElementById("sheetResultsBody");
@@ -112,11 +109,46 @@ const loadSheetResults = async () => {
 };
 loadSheetResults();
 
-/* Accessibility panel — public pages only. */
+/* Accessibility + utility icon polish — public pages only. */
 (() => {
   if (document.body?.classList.contains("dashboard-body") || document.getElementById("accessibilityPanel")) return;
   const host = document.querySelector(".languages");
   if (!host) return;
+
+  const style = document.createElement("style");
+  style.textContent = `
+    .languages::before{display:none!important}
+    .languages{display:flex!important;align-items:center!important;gap:6px!important}
+    .site-social-links{display:flex;align-items:center;gap:6px}
+    .utility-icon,.accessibility-toggle{width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;border:0!important;border-radius:8px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;background:rgba(255,255,255,.10)!important;color:#fff!important;box-shadow:none!important;transform:none!important;transition:background .18s ease,transform .18s ease!important;text-decoration:none!important;cursor:pointer!important}
+    .utility-icon:hover,.accessibility-toggle:hover,.accessibility-toggle[aria-expanded="true"]{background:rgba(255,255,255,.18)!important;transform:translateY(-1px)!important}
+    .utility-icon i,.accessibility-toggle i{font-size:15px!important;line-height:1!important}
+    .header .logo{width:96px!important;height:96px!important;top:-32px!important}
+    .header .logo-icon{width:96px!important;height:96px!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+    .header .logo-icon img{width:100%!important;height:100%!important;object-fit:contain!important;filter:none!important}
+    .footer .logo-icon{background:transparent!important;border:0!important;box-shadow:none!important}
+    .footer .logo-icon img{filter:none!important}
+    @media(max-width:980px){.site-social-links{gap:5px}.utility-icon,.accessibility-toggle{width:38px!important;height:38px!important;min-width:38px!important}.header .logo{width:88px!important;height:88px!important;top:-28px!important}.header .logo-icon{width:88px!important;height:88px!important}}
+    @media(max-width:620px){.site-social-links{display:none}.utility-icon,.accessibility-toggle{width:38px!important;height:38px!important;min-width:38px!important}.header .logo{width:78px!important;height:78px!important;top:-22px!important}.header .logo-icon{width:78px!important;height:78px!important}}
+  `;
+  document.head.appendChild(style);
+
+  const social = document.createElement("div");
+  social.className = "site-social-links";
+  social.setAttribute("aria-label", "Ijtimoiy tarmoqlar");
+  social.innerHTML = `
+    <a class="utility-icon" href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a class="utility-icon" href="#" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+    <a class="utility-icon" href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a class="utility-icon" href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>`;
+  host.prepend(social);
+
+  const searchButton = document.createElement("button");
+  searchButton.type = "button";
+  searchButton.className = "utility-icon utility-search";
+  searchButton.setAttribute("aria-label", "Qidiruv");
+  searchButton.innerHTML = '<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>';
+  host.insertBefore(searchButton, host.querySelector(".language"));
 
   const toggle = document.createElement("button");
   toggle.type = "button";
@@ -124,7 +156,7 @@ loadSheetResults();
   toggle.setAttribute("aria-label", "Maxsus imkoniyatlar");
   toggle.setAttribute("aria-expanded", "false");
   toggle.innerHTML = '<i class="fa-solid fa-eye" aria-hidden="true"></i>';
-  host.prepend(toggle);
+  host.insertBefore(toggle, host.querySelector(".language"));
 
   const panel = document.createElement("aside");
   panel.id = "accessibilityPanel";
@@ -152,7 +184,6 @@ loadSheetResults();
   const rootEl = document.documentElement;
   const storedSize = localStorage.getItem("nukus-a11y-size") || "normal";
   const storedContrast = localStorage.getItem("nukus-a11y-contrast") === "1";
-
   const applySize = (size) => {
     rootEl.classList.remove("a11y-large", "a11y-xlarge");
     if (size === "large") rootEl.classList.add("a11y-large");
@@ -166,18 +197,10 @@ loadSheetResults();
     localStorage.setItem("nukus-a11y-contrast", enabled ? "1" : "0");
   };
   applySize(storedSize); applyContrast(storedContrast);
-
-  toggle.addEventListener("click", () => {
-    const open = panel.classList.toggle("open");
-    toggle.setAttribute("aria-expanded", String(open));
-  });
-  panel.querySelector(".accessibility-close")?.addEventListener("click", () => {
-    panel.classList.remove("open"); toggle.setAttribute("aria-expanded", "false");
-  });
+  toggle.addEventListener("click", () => { const open = panel.classList.toggle("open"); toggle.setAttribute("aria-expanded", String(open)); });
+  panel.querySelector(".accessibility-close")?.addEventListener("click", () => { panel.classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); });
   panel.querySelectorAll("[data-size]").forEach((button) => button.addEventListener("click", () => applySize(button.dataset.size)));
   panel.querySelector('[data-action="contrast"]')?.addEventListener("click", () => applyContrast(!document.body.classList.contains("a11y-contrast")));
   panel.querySelector('[data-action="reset"]')?.addEventListener("click", () => { applySize("normal"); applyContrast(false); });
-  document.addEventListener("click", (event) => {
-    if (!panel.contains(event.target) && !toggle.contains(event.target)) { panel.classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); }
-  });
+  document.addEventListener("click", (event) => { if (!panel.contains(event.target) && !toggle.contains(event.target)) { panel.classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); } });
 })();
