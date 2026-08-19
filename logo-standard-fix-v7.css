@@ -1,0 +1,3 @@
+/* Ensure the standard logo is visible when the header overlays the top bar. */
+.header .logo{position:absolute!important;display:flex!important}
+.header .logo-icon img{display:block!important}
