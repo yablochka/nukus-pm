@@ -1,5 +1,0 @@
-/* Ensures the header uses the actual logo image instead of a hidden CSS background. */
-.logo{z-index:1205!important}
-.logo-icon img{display:block!important;width:116px!important;height:116px!important;max-width:none!important;max-height:none!important;object-fit:contain!important;filter:brightness(0) invert(1)!important}
-@media(max-width:980px){.logo-icon img{width:92px!important;height:92px!important}}
-@media(max-width:620px){.logo-icon img{width:82px!important;height:82px!important}}
