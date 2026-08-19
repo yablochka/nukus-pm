@@ -1,4 +1,0 @@
-/* Keep the header logo from being hidden by the navigation backdrop. */
-.header .logo{z-index:9999!important}
-.header .logo-icon{z-index:9999!important;position:relative}
-.header .logo-icon img{position:relative;z-index:10000!important}
