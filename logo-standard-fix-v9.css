@@ -1,0 +1,2 @@
+/* Use the same visible logo treatment in every public header. */
+.header .logo-icon img{content:url("images/PSN LOGO.png")!important}
