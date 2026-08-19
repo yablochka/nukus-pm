@@ -1,0 +1,206 @@
+/* Standard public header — shared by all public pages. Dashboard is intentionally excluded. */
+body:not(.dashboard-body)::before{
+  content:"●  Sayt vaqtincha test rejimida ishlamoqda.   Dasturchi →";
+  display:block;
+  height:10px;
+  line-height:10px;
+  padding:0;
+  background:#071b52;
+  color:rgba(255,255,255,.92);
+  text-align:center;
+  font-size:10px;
+  font-weight:700;
+}
+body:not(.dashboard-body) .top-bar{
+  min-height:56px;
+  height:56px;
+  background:#0d2b70;
+  position:relative;
+  z-index:1100;
+}
+body:not(.dashboard-body) .top-bar-content{
+  min-height:56px;
+  height:56px;
+  width:min(100% - 48px,1280px);
+}
+body:not(.dashboard-body) .top-contact{gap:10px}
+body:not(.dashboard-body) .top-contact span{
+  min-height:38px;
+  box-sizing:border-box;
+  padding:8px 13px;
+  border-radius:7px;
+  background:rgba(255,255,255,.09);
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+}
+body:not(.dashboard-body) .top-contact i{color:#fff}
+body:not(.dashboard-body) .languages{gap:6px}
+body:not(.dashboard-body) .languages::before{display:none!important}
+body:not(.dashboard-body) .language,
+body:not(.dashboard-body) .utility-icon,
+body:not(.dashboard-body) .accessibility-toggle{
+  width:40px;
+  height:40px;
+  min-width:40px;
+  padding:0;
+  border:0;
+  border-radius:8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  font-weight:800;
+}
+body:not(.dashboard-body) .language.active,
+body:not(.dashboard-body) .language:hover,
+body:not(.dashboard-body) .utility-icon:hover,
+body:not(.dashboard-body) .accessibility-toggle:hover{background:rgba(255,255,255,.18);color:#fff}
+body:not(.dashboard-body) .header{
+  top:66px;
+  left:0;
+  right:0;
+  height:72px;
+  min-height:72px;
+  background:rgba(8,25,60,.48);
+  border:0;
+  backdrop-filter:blur(5px);
+  z-index:1000;
+}
+body:not(.dashboard-body) .header-content{
+  width:min(100% - 48px,1280px);
+  min-height:72px;
+  height:72px;
+  position:relative;
+  justify-content:center;
+}
+/* Real logo only: remove the old background-image logo which caused the faint ghost logo. */
+body:not(.dashboard-body) .header .logo{
+  position:absolute!important;
+  left:50%!important;
+  top:-45px!important;
+  transform:translateX(-50%)!important;
+  width:100px!important;
+  height:100px!important;
+  margin:0!important;
+  padding:0!important;
+  z-index:1200!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+body:not(.dashboard-body) .header .logo-icon{
+  width:100px!important;
+  height:100px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:0!important;
+}
+body:not(.dashboard-body) .header .logo-icon img{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100px!important;
+  height:100px!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  filter:brightness(0) invert(1)!important;
+}
+body:not(.dashboard-body) .header .logo-text{display:none!important}
+/* script.js creates the canonical 3 dropdowns + 3 direct links. */
+body:not(.dashboard-body) .navigation{
+  width:100%!important;
+  height:72px!important;
+  min-height:72px!important;
+  display:grid!important;
+  grid-template-columns:repeat(6,1fr)!important;
+  align-items:stretch!important;
+  gap:0!important;
+  padding:0!important;
+  margin:0!important;
+}
+body:not(.dashboard-body) .nav-dropdown,
+body:not(.dashboard-body) .nav-link{
+  min-width:0;
+  min-height:72px!important;
+  height:72px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  color:#fff!important;
+  background:transparent!important;
+  border:0!important;
+  text-align:center!important;
+  font-size:15px!important;
+  font-weight:800!important;
+}
+body:not(.dashboard-body) .nav-dropdown-button{
+  width:100%;
+  height:72px;
+  min-height:72px;
+  padding:0 16px!important;
+  border:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  font:800 15px Inter,sans-serif!important;
+  cursor:pointer;
+}
+body:not(.dashboard-body) .nav-dropdown-button::after{content:"⌄";margin-left:7px;color:#fff;font-size:13px}
+body:not(.dashboard-body) .nav-dropdown:hover,
+body:not(.dashboard-body) .nav-dropdown.active,
+body:not(.dashboard-body) .nav-link:hover,
+body:not(.dashboard-body) .nav-link.active{background:rgba(255,255,255,.10)!important}
+body:not(.dashboard-body) .nav-link::after{display:none!important}
+body:not(.dashboard-body) .nav-dropdown-menu{
+  top:72px!important;
+  min-width:230px!important;
+  padding:9px!important;
+  background:#fff!important;
+  border:0!important;
+  border-radius:0 0 10px 10px!important;
+  box-shadow:0 20px 45px rgba(8,25,60,.20)!important;
+}
+body:not(.dashboard-body) .nav-dropdown-link{display:block;padding:11px 13px;color:#17223b;font-size:14px;font-weight:600;border-radius:6px}
+body:not(.dashboard-body) .nav-dropdown-link:hover,
+body:not(.dashboard-body) .nav-dropdown-link.active{background:#edf3fb;color:#0b2a6f}
+body:not(.dashboard-body) .menu-button{display:none!important}
+@media(max-width:980px){
+  body:not(.dashboard-body)::before{font-size:9px}
+  body:not(.dashboard-body) .top-contact span:first-child{display:none}
+  body:not(.dashboard-body) .top-bar,body:not(.dashboard-body) .top-bar-content{height:52px;min-height:52px}
+  body:not(.dashboard-body) .top-contact span{min-height:36px;font-size:11px;padding:7px 9px}
+  body:not(.dashboard-body) .header{top:62px;height:68px;min-height:68px}
+  body:not(.dashboard-body) .header-content{height:68px;min-height:68px}
+  body:not(.dashboard-body) .header .logo{width:88px!important;height:88px!important;top:-38px!important}
+  body:not(.dashboard-body) .header .logo-icon,body:not(.dashboard-body) .header .logo-icon img{width:88px!important;height:88px!important}
+  body:not(.dashboard-body) .navigation{position:absolute!important;left:0!important;right:0!important;top:68px!important;height:auto!important;min-height:0!important;display:none!important;grid-template-columns:1fr!important;background:#fff!important;box-shadow:0 20px 40px rgba(8,25,60,.18);padding:8px!important}
+  body:not(.dashboard-body) .navigation.show,body:not(.dashboard-body) .navigation.open{display:grid!important}
+  body:not(.dashboard-body) .nav-dropdown,body:not(.dashboard-body) .nav-link{height:48px!important;min-height:48px!important;justify-content:flex-start!important;color:#15213d!important;background:#fff!important}
+  body:not(.dashboard-body) .nav-dropdown-button{height:48px;min-height:48px;text-align:left;color:#15213d!important}
+  body:not(.dashboard-body) .nav-dropdown-button::after{color:#0b2a6f}
+  body:not(.dashboard-body) .nav-dropdown:hover,body:not(.dashboard-body) .nav-dropdown.active,body:not(.dashboard-body) .nav-link:hover,body:not(.dashboard-body) .nav-link.active{background:#eef4fb!important;color:#0b2a6f!important}
+  body:not(.dashboard-body) .nav-dropdown-menu{position:static!important;display:none;min-width:0!important;box-shadow:none!important;border-radius:0!important;padding:0 0 0 12px!important}
+  body:not(.dashboard-body) .nav-dropdown.open .nav-dropdown-menu{display:block}
+  body:not(.dashboard-body) .menu-button{display:flex!important;position:absolute;right:0;top:12px;width:44px;height:44px;border-radius:8px;background:#fff;color:#0b2a6f}
+}
+@media(max-width:620px){
+  body:not(.dashboard-body) .container,body:not(.dashboard-body) .top-bar-content,body:not(.dashboard-body) .header-content{width:min(100% - 28px,1280px)}
+  body:not(.dashboard-body) .top-contact span:nth-child(2){display:none}
+  body:not(.dashboard-body) .languages .language:nth-of-type(2){display:none}
+  body:not(.dashboard-body) .site-social-links{display:none!important}
+  body:not(.dashboard-body) .header .logo{width:78px!important;height:78px!important;top:-31px!important}
+  body:not(.dashboard-body) .header .logo-icon,body:not(.dashboard-body) .header .logo-icon img{width:78px!important;height:78px!important}
+}
+/* Dashboard remains untouched. */
+.dashboard-body::before{display:none!important}
+.dashboard-body .header .logo,.dashboard-body .header .logo-icon,.dashboard-body .header .logo-icon img{filter:none!important}
