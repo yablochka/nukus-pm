@@ -1,0 +1,2 @@
+/* Keep the header logo visible above the navigation layer. */
+.header .logo,.header .logo-icon,.header .logo-icon img{visibility:visible!important;opacity:1!important}
