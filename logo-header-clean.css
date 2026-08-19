@@ -1,8 +1,0 @@
-/* Clean public-header logo: use the real image, keep it visible above the nav. */
-.header .logo{position:absolute!important;left:50%!important;top:-47px!important;transform:translateX(-50%)!important;width:116px!important;height:116px!important;z-index:9999!important;display:flex!important;align-items:center!important;justify-content:center!important}
-.header .logo-icon{width:116px!important;height:116px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;display:flex!important;align-items:center!important;justify-content:center!important;filter:none!important}
-.header .logo-icon img{display:block!important;visibility:visible!important;opacity:1!important;width:116px!important;height:116px!important;max-width:none!important;max-height:none!important;object-fit:contain!important;filter:brightness(0) invert(1)!important}
-.header .logo-text{display:none!important}
-@media(max-width:980px){.header .logo{width:92px!important;height:92px!important;top:-34px!important}.header .logo-icon,.header .logo-icon img{width:92px!important;height:92px!important}}
-@media(max-width:620px){.header .logo{width:82px!important;height:82px!important;top:-28px!important}.header .logo-icon,.header .logo-icon img{width:82px!important;height:82px!important}}
-.dashboard-body .logo,.dashboard-body .logo-icon,.dashboard-body .logo-icon img{filter:none!important}
