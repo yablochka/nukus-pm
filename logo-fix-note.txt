@@ -1,1 +1,0 @@
-Header logo fix is isolated in logo-standard-fix.css.
