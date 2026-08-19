@@ -1,0 +1,45 @@
+/* Public navigation dropdown behavior fix.
+   Dropdowns must stay closed until their button is clicked.
+   Dashboard is intentionally excluded. */
+body:not(.dashboard-body) .navigation .nav-dropdown-menu{
+  position:absolute!important;
+  top:72px!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  z-index:1300!important;
+}
+
+body:not(.dashboard-body) .navigation .nav-dropdown{
+  position:relative!important;
+}
+
+body:not(.dashboard-body) .navigation .nav-dropdown.open .nav-dropdown-menu{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+
+/* Active page/group is highlighted, but must NOT open its dropdown. */
+body:not(.dashboard-body) .navigation .nav-dropdown.active .nav-dropdown-menu{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+body:not(.dashboard-body) .navigation .nav-dropdown.active.open .nav-dropdown-menu{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+
+body:not(.dashboard-body) .navigation .nav-dropdown-menu .nav-dropdown-link{
+  position:relative!important;
+  z-index:1!important;
+}
